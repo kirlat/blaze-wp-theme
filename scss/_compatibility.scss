@@ -1,0 +1,30 @@
+// Colors
+$js-warning-text:      #000000;
+$js-warning-bg:        #FFFF00;
+$unsupported-features-text: #FFFFFF;
+$unsupported-features-bg:   #FF0000;
+
+
+.page-info-panel {
+    width: 100%;
+    padding: 2rem 4rem 1.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    text-align: center;
+    z-index: 10000;
+}
+
+.js-disabled-warning {
+    background: $js-warning-bg;
+    color: $js-warning-text;
+}
+
+.unsupported-features-warning {
+    background: $unsupported-features-bg;
+    color: $unsupported-features-text;
+}
+
+#id-unsupported-features-warning {
+    display: none; // Hidden by default, enabled by JS feature detection
+}

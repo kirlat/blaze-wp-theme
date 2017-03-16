@@ -1,0 +1,28 @@
+<header id="header-bg" data-blz-pg-header="">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Will display on all resolutions -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{siteURL}}">{{siteName}}</a>
+            </div>
+
+            <!-- Collapsible navbar element, goes to menu on mobile -->
+            <div class="collapse navbar-collapse" id="bs-navbar-collapse">
+                {{{mainMenuBootstrap3}}}
+                <form id="searchform" class="navbar-form navbar-right" role="search" method="get" action="{{siteURL}}">
+                    <div class="form-group">
+                        <label class="screen-reader-text" for="s">Search for:</label>
+                        <input type="text" class="form-control" value="" name="s" id="s" placeholder="Search">
+                    </div>
+                    <input id="searchsubmit" class="btn btn-default" type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </nav>
+</header>

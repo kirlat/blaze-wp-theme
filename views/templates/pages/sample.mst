@@ -1,0 +1,26 @@
+<div id="main-bg">
+    <div id="main" class="container">
+        <section id="content">
+            {{{breadcrumbs}}}
+            {{#posts}}
+                <article id="post-{{id}}">
+                    <a href="{{permalink}}" rel="bookmark" title="">
+                        <h3 class="post-headline">{{title}}</h3>
+                    </a>
+                    <div class="post-body clearfix">
+                        {{{body}}}
+                        <h3>Some Text after body</h3>
+                        {{#customPosts}}
+                            <h4>{{title}} (ID={{id}})</h4>
+                            <strong>{{custom_field_1}}</strong>
+                            <div>
+                                {{{body}}}
+                            </div>
+                        {{/customPosts}}
+                    </div>
+                </article>
+            {{/posts}}
+            {{{commentsTemplate}}}
+        </section>
+    </div>
+</div>

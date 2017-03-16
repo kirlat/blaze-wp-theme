@@ -1,0 +1,46 @@
+// Major page elements
+body {
+    position: relative;
+}
+
+// Header
+#header-bg {
+    margin-bottom: 20px;
+}
+
+#header-bg.header-sticky {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1030;
+}
+
+// Posts
+.ft-img {
+    width: 100px;
+    height: auto;
+}
+
+// Footer
+#footer-bg {
+    width: 100%;
+    height: 4rem;
+    background-color: #F8F8F8;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #E7E7E7;
+}
+
+#footer-bg.footer-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+#footer-bg.footer-sticky {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+}

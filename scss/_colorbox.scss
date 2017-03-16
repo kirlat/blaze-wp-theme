@@ -1,0 +1,201 @@
+//  Colorbox Core Style:
+//  Add "colorbox-fa" class to page body to use Font Awesome icons instead of Glypicons
+
+//  Configuration variables:
+$control-element-size: 22px;
+$color-title: #949494;
+$color-control-hover: #C88200;
+
+
+//  The following CSS is consistent between example themes and should not be altered.
+
+#colorbox, #cboxOverlay, #cboxWrapper{position:absolute; top:0; left:0; z-index:9999; overflow:hidden;}
+#cboxWrapper {max-width:none;}
+#cboxOverlay{position:fixed; width:100%; height:100%;}
+#cboxMiddleLeft, #cboxBottomLeft{clear:left;}
+#cboxContent{position:relative;}
+#cboxLoadedContent{overflow:auto; -webkit-overflow-scrolling: touch;}
+#cboxTitle{margin:0;}
+#cboxLoadingOverlay, #cboxLoadingGraphic{position:absolute; top:0; left:0; width:100%; height:100%;}
+.cboxPhoto{float:left; margin:auto; border:0; display:block; max-width:none; -ms-interpolation-mode:bicubic;}
+.cboxIframe{width:100%; height:100%; display:block; border:0; padding:0; margin:0;}
+#colorbox, #cboxContent, #cboxLoadedContent{box-sizing:content-box; -moz-box-sizing:content-box; -webkit-box-sizing:content-box;}
+
+//  User Style:
+//  Change the following styles to modify the appearance of Colorbox.  They are
+//  ordered & tabbed in a way that represents the nesting of the generated HTML.
+
+#cboxOverlay{
+    background: #2B2B2B;
+    opacity: 0.85;
+    filter: alpha(opacity = 85);
+}
+
+#colorbox{
+    outline:0;
+}
+
+#cboxContent{
+    background: #141414;
+    overflow: hidden;
+    border: 10px solid #141414;
+    border-radius: 4px;
+}
+
+.cboxIframe{
+    background: #141414;
+}
+
+#cboxError {
+    padding: 50px;
+    border: 1px solid #ccc;
+}
+
+#cboxLoadedContent {
+    margin-bottom: 28px;
+}
+
+#cboxTitle {
+    position:absolute;
+    bottom:4px;
+    left:0;
+    text-align:center;
+    width:100%;
+    color: $color-title;
+}
+
+#cboxCurrent {
+    position: absolute;
+    bottom: 1px;
+    left: 58px;
+    color:#949494;
+}
+
+#cboxLoadingOverlay {
+    background: #141414;
+}
+#cboxLoadingGraphic{
+    background: url(../images/colorbox/loading.gif) no-repeat center center;
+}
+
+// these elements are buttons, and may need to have additional styles reset to avoid unwanted base styles
+#cboxPrevious,
+#cboxNext,
+#cboxSlideshow,
+#cboxClose {
+    position: absolute;
+    cursor: pointer;
+    border:0;
+    padding:0;
+    margin:0;
+    overflow: hidden;
+    width: $control-element-size;
+    background:none;
+    font-size: $control-element-size;
+    line-height: 1;
+    font-family: "Glyphicons Halflings";
+}
+
+// avoid outlines on :active (mouseclick), but preserve outlines on :focus (tabbed navigating)
+#cboxPrevious:active,
+#cboxNext:active,
+#cboxSlideshow:active,
+#cboxClose:active {
+    outline:0;
+}
+
+#cboxPrevious:before,
+#cboxNext:before,
+#cboxSlideshow:before,
+#cboxClose:before {
+    display: block;
+    content: '';
+}
+
+#cboxPrevious:hover,
+#cboxNext:hover,
+#cboxSlideshow:hover,
+#cboxClose:hover {
+    color: $color-control-hover;
+}
+
+#cboxSlideshow{
+    bottom: 4px;
+    right: 30px;
+    color: $color-control-hover;
+}
+
+#cboxPrevious {
+    bottom:0;
+    left:0;
+    width:$control-element-size;
+    height:$control-element-size;
+}
+
+#cboxPrevious:before {
+    content: "\e132";
+}
+
+#cboxNext {
+    bottom:0;
+    left:27px;
+    width:$control-element-size;
+    height:$control-element-size;
+}
+
+#cboxNext:before {
+    content: "\e131";
+}
+
+#cboxClose {
+    bottom:0;
+    right:0;
+    width:$control-element-size;
+    height:$control-element-size;
+}
+
+#cboxClose:before {
+    content:"\e083";
+}
+
+// Font Awesome variant
+.colorbox-fa {
+  #cboxPrevious,
+  #cboxNext,
+  #cboxSlideshow,
+  #cboxClose {
+    position: absolute;
+    cursor: pointer;
+    border:0;
+    padding:0;
+    margin:0;
+    overflow: hidden;
+    background:none;
+    font-size: $control-element-size;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-feature-settings: normal;
+    font-language-override: normal;
+    font-kerning: auto;
+    font-synthesis: weight style;
+    font-variant: normal;
+    text-rendering: auto;
+  }
+
+  #cboxPrevious:before {
+    content: "\f053";
+  }
+
+  #cboxNext:before {
+    content: "\f054";
+  }
+
+  #cboxClose:before {
+    content:"\f00d";
+  }
+}

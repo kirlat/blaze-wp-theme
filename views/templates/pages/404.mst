@@ -1,0 +1,15 @@
+<div id="main-bg">
+    <div id="main" class="container">
+        <section id="content">
+            {{{breadcrumbs}}}
+            <article id="post-{{id}}">
+                <a href="{{permalink}}" rel="bookmark" title="">
+                    <h2 class="post-headline">Not Found</h2>
+                </a>
+                <div class="post-body clearfix">
+                    {{{searchForm}}}
+                </div>
+            </article>
+        </section>
+    </div>
+</div>

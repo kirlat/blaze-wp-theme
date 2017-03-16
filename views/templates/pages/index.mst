@@ -1,0 +1,23 @@
+<div id="main-bg">
+    <div id="main" class="container">
+        <section id="content">
+            {{{breadcrumbs}}}
+            {{{pagination}}}
+            {{#posts}}
+                <article id="post-{{id}}">
+                    <a href="{{permalink}}" rel="bookmark" title="">
+                        <h1 class="post-headline">{{title}}</h1>
+                    </a>
+                    <div class="post-body clearfix">
+                        {{#hasThumbnail}} <img class="ft-img" src="{{{thumbnailURL}}}" alt="Post thumbnail"> {{/hasThumbnail}}
+                        <p>{{{excerpt}}}</p>
+                        <p>Written {{dateAgo}} by {{author}}</p>
+                        {{#hasCategories}}<p>Categories: {{{categoryLinks}}}</p>{{/hasCategories}}
+                        {{#hasTags}}<p>Tags: {{{tagLinks}}}</p>{{/hasTags}}
+                    </div>
+                </article>
+            {{/posts}}
+            {{{pagination}}}
+        </section>
+    </div>
+</div>

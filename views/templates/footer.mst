@@ -1,0 +1,5 @@
+<footer id="footer-bg" data-blz-pg-footer="bottom">
+    <div id="footer" class="container">
+        <div id="footer-copyrightinfo">Copyright info</div>
+    </div>
+</footer>
