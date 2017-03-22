@@ -66,8 +66,9 @@ var imagesSourcePath = 'images/source/**/*',
         'components/bootstrap-sass/assets/javascripts/bootstrap.js',
         'components/colorbox/jquery.colorbox.js',
         'components/smartmenus/dist/jquery.smartmenus.js',
-        'components/smartmenus/dist/addons/jquery.smartmenus.bootstrap.js',
+        'components/smartmenus/dist/addons/bootstrap/jquery.smartmenus.bootstrap.js',
         'components/webfontloader/webfontloader.js',
+        'components/blaze-utils/js/utils.js',
         jsSourcePath
     ],
     jsDevDependencies = [
@@ -75,8 +76,9 @@ var imagesSourcePath = 'images/source/**/*',
         'components/bootstrap-sass/assets/javascripts/bootstrap.js',
         'components/colorbox/jquery.colorbox.js',
         'components/smartmenus/dist/jquery.smartmenus.js',
-        'components/smartmenus/dist/addons/jquery.smartmenus.bootstrap.js',
-        'components/webfontloader/webfontloader.js'
+        'components/smartmenus/dist/addons/bootstrap/jquery.smartmenus.bootstrap.js',
+        'components/webfontloader/webfontloader.js',
+        'components/blaze-utils/js/utils.js'
     ],
     componentsRoot = 'components', // A directory inside theme's folder where components should be installed
     dependencies = [
@@ -97,6 +99,12 @@ var imagesSourcePath = 'images/source/**/*',
             URI: 'https://github.com/kirlat/blaze-components.git',
             revision: 'head',
             installPath: 'blaze-components'
+        },
+        {
+            name: 'blaze-utils',
+            URI: 'https://github.com/kirlat/blaze-utils.git',
+            revision: 'head',
+            installPath: 'blaze-utils'
         },
         {
             name: 'bootstrap-sass',
@@ -270,7 +278,6 @@ gulp.task('build', ['images', 'css', 'css-dev', 'js', 'js-dev']);
 // Watch (production version)
 gulp.task('watch', function() {
     gulp.watch(imagesSourcePath, ['images']);
-    gulp.watch(contentImagesSourcePath, ['content-images']);
     gulp.watch(scssSourcePath, ['css']);
     gulp.watch(jsSourcePath, ['js']);
 });
@@ -278,7 +285,6 @@ gulp.task('watch', function() {
 // Watch (development version)
 gulp.task('watch-dev', function() {
     gulp.watch(imagesSourcePath, ['images']);
-    gulp.watch(contentImagesSourcePath, ['content-images']);
     gulp.watch(scssSourcePath, ['css-dev']);
     gulp.watch(jsSourcePath, ['js-dev']);
 });

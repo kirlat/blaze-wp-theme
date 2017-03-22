@@ -4705,6 +4705,180 @@ if (typeof jQuery === 'undefined') {
 
 	return $;
 }));
+/*!
+ * SmartMenus jQuery Plugin Bootstrap Addon - v0.3.1 - November 1, 2016
+ * http://www.smartmenus.org/
+ *
+ * Copyright Vasil Dinkov, Vadikom Web Ltd.
+ * http://vadikom.com
+ *
+ * Licensed MIT
+ */
+
+(function(factory) {
+	if (typeof define === 'function' && define.amd) {
+		// AMD
+		define(['jquery', 'jquery.smartmenus'], factory);
+	} else if (typeof module === 'object' && typeof module.exports === 'object') {
+		// CommonJS
+		module.exports = factory(require('jquery'));
+	} else {
+		// Global jQuery
+		factory(jQuery);
+	}
+} (function($) {
+
+	$.extend($.SmartMenus.Bootstrap = {}, {
+		keydownFix: false,
+		init: function() {
+			// init all navbars that don't have the "data-sm-skip" attribute set
+			var $navbars = $('ul.navbar-nav:not([data-sm-skip])');
+			$navbars.each(function() {
+				var $this = $(this),
+					obj = $this.data('smartmenus');
+				// if this navbar is not initialized
+				if (!obj) {
+					$this.smartmenus({
+
+							// these are some good default options that should work for all
+							// you can, of course, tweak these as you like
+							subMenusSubOffsetX: 2,
+							subMenusSubOffsetY: -6,
+							subIndicators: false,
+							collapsibleShowFunction: null,
+							collapsibleHideFunction: null,
+							rightToLeftSubMenus: $this.hasClass('navbar-right'),
+							bottomToTopSubMenus: $this.closest('.navbar').hasClass('navbar-fixed-bottom')
+						})
+						.bind({
+							// set/unset proper Bootstrap classes for some menu elements
+							'show.smapi': function(e, menu) {
+								var $menu = $(menu),
+									$scrollArrows = $menu.dataSM('scroll-arrows');
+								if ($scrollArrows) {
+									// they inherit border-color from body, so we can use its background-color too
+									$scrollArrows.css('background-color', $(document.body).css('background-color'));
+								}
+								$menu.parent().addClass('open');
+							},
+							'hide.smapi': function(e, menu) {
+								$(menu).parent().removeClass('open');
+							}
+						});
+
+					function onInit() {
+						// set Bootstrap's "active" class to SmartMenus "current" items (should someone decide to enable markCurrentItem: true)
+						$this.find('a.current').parent().addClass('active');
+						// remove any Bootstrap required attributes that might cause conflicting issues with the SmartMenus script
+						$this.find('a.has-submenu').each(function() {
+							var $this = $(this);
+							if ($this.is('[data-toggle="dropdown"]')) {
+								$this.dataSM('bs-data-toggle-dropdown', true).removeAttr('data-toggle');
+							}
+							if ($this.is('[role="button"]')) {
+								$this.dataSM('bs-role-button', true).removeAttr('role');
+							}
+						});
+					}
+
+					onInit();
+
+					function onBeforeDestroy() {
+						$this.find('a.current').parent().removeClass('active');
+						$this.find('a.has-submenu').each(function() {
+							var $this = $(this);
+							if ($this.dataSM('bs-data-toggle-dropdown')) {
+								$this.attr('data-toggle', 'dropdown').removeDataSM('bs-data-toggle-dropdown');
+							}
+							if ($this.dataSM('bs-role-button')) {
+								$this.attr('role', 'button').removeDataSM('bs-role-button');
+							}
+						});
+					}
+
+					obj = $this.data('smartmenus');
+
+					// custom "isCollapsible" method for Bootstrap
+					obj.isCollapsible = function() {
+						return !/^(left|right)$/.test(this.$firstLink.parent().css('float'));
+					};
+
+					// custom "refresh" method for Bootstrap
+					obj.refresh = function() {
+						$.SmartMenus.prototype.refresh.call(this);
+						onInit();
+						// update collapsible detection
+						detectCollapsible(true);
+					};
+
+					// custom "destroy" method for Bootstrap
+					obj.destroy = function(refresh) {
+						onBeforeDestroy();
+						$.SmartMenus.prototype.destroy.call(this, refresh);
+					};
+
+					// keep Bootstrap's default behavior for parent items when the "data-sm-skip-collapsible-behavior" attribute is set to the ul.navbar-nav
+					// i.e. use the whole item area just as a sub menu toggle and don't customize the carets
+					if ($this.is('[data-sm-skip-collapsible-behavior]')) {
+						$this.bind({
+							// click the parent item to toggle the sub menus (and reset deeper levels and other branches on click)
+							'click.smapi': function(e, item) {
+								if (obj.isCollapsible()) {
+									var $item = $(item),
+										$sub = $item.parent().dataSM('sub');
+									if ($sub && $sub.dataSM('shown-before') && $sub.is(':visible')) {
+										obj.itemActivate($item);
+										obj.menuHide($sub);
+										return false;
+									}
+								}
+							}
+						});
+					}
+
+					// onresize detect when the navbar becomes collapsible and add it the "sm-collapsible" class
+					var winW;
+					function detectCollapsible(force) {
+						var newW = obj.getViewportWidth();
+						if (newW != winW || force) {
+							var $carets = $this.find('.caret');
+							if (obj.isCollapsible()) {
+								$this.addClass('sm-collapsible');
+								// set "navbar-toggle" class to carets (so they look like a button) if the "data-sm-skip-collapsible-behavior" attribute is not set to the ul.navbar-nav
+								if (!$this.is('[data-sm-skip-collapsible-behavior]')) {
+									$carets.addClass('navbar-toggle sub-arrow');
+								}
+							} else {
+								$this.removeClass('sm-collapsible');
+								if (!$this.is('[data-sm-skip-collapsible-behavior]')) {
+									$carets.removeClass('navbar-toggle sub-arrow');
+								}
+							}
+							winW = newW;
+						}
+					}
+					detectCollapsible();
+					$(window).bind('resize.smartmenus' + obj.rootId, detectCollapsible);
+				}
+			});
+			// keydown fix for Bootstrap 3.3.5+ conflict
+			if ($navbars.length && !$.SmartMenus.Bootstrap.keydownFix) {
+				// unhook BS keydown handler for all dropdowns
+				$(document).off('keydown.bs.dropdown.data-api', '.dropdown-menu');
+				// restore BS keydown handler for dropdowns that are not inside SmartMenus navbars
+				if ($.fn.dropdown && $.fn.dropdown.Constructor) {
+					$(document).on('keydown.bs.dropdown.data-api', '.dropdown-menu:not([id^="sm-"])', $.fn.dropdown.Constructor.prototype.keydown);
+				}
+				$.SmartMenus.Bootstrap.keydownFix = true;
+			}
+		}
+	});
+
+	// init ondomready
+	$($.SmartMenus.Bootstrap.init);
+
+	return $;
+}));
 /* Web Font Loader v1.6.27 - (c) Adobe Systems, Google. License: Apache 2.0 */(function(){function aa(a,b,c){return a.call.apply(a.bind,arguments)}function ba(a,b,c){if(!a)throw Error();if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}}function p(a,b,c){p=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?aa:ba;return p.apply(null,arguments)}var q=Date.now||function(){return+new Date};function ca(a,b){this.a=a;this.m=b||a;this.c=this.m.document}var da=!!window.FontFace;function t(a,b,c,d){b=a.c.createElement(b);if(c)for(var e in c)c.hasOwnProperty(e)&&("style"==e?b.style.cssText=c[e]:b.setAttribute(e,c[e]));d&&b.appendChild(a.c.createTextNode(d));return b}function u(a,b,c){a=a.c.getElementsByTagName(b)[0];a||(a=document.documentElement);a.insertBefore(c,a.lastChild)}function v(a){a.parentNode&&a.parentNode.removeChild(a)}
 function w(a,b,c){b=b||[];c=c||[];for(var d=a.className.split(/\s+/),e=0;e<b.length;e+=1){for(var f=!1,g=0;g<d.length;g+=1)if(b[e]===d[g]){f=!0;break}f||d.push(b[e])}b=[];for(e=0;e<d.length;e+=1){f=!1;for(g=0;g<c.length;g+=1)if(d[e]===c[g]){f=!0;break}f||b.push(d[e])}a.className=b.join(" ").replace(/\s+/g," ").replace(/^\s+|\s+$/,"")}function y(a,b){for(var c=a.className.split(/\s+/),d=0,e=c.length;d<e;d++)if(c[d]==b)return!0;return!1}
 function z(a){if("string"===typeof a.f)return a.f;var b=a.m.location.protocol;"about:"==b&&(b=a.a.location.protocol);return"https:"==b?"https:":"http:"}function ea(a){return a.m.location.hostname||a.a.location.hostname}
@@ -4723,3 +4897,45 @@ var Ba={latin:"BESbswy","latin-ext":"\u00e7\u00f6\u00fc\u011f\u015f",cyrillic:"\
 Ea=/^(thin|(?:(?:extra|ultra)-?)?light|regular|book|medium|(?:(?:semi|demi|extra|ultra)-?)?bold|black|heavy|l|r|b|[1-9]00)?(n|i|normal|italic)?$/;
 function Fa(a){for(var b=a.f.length,c=0;c<b;c++){var d=a.f[c].split(":"),e=d[0].replace(/\+/g," "),f=["n4"];if(2<=d.length){var g;var k=d[1];g=[];if(k)for(var k=k.split(","),h=k.length,m=0;m<h;m++){var l;l=k[m];if(l.match(/^[\w-]+$/)){var n=Ea.exec(l.toLowerCase());if(null==n)l="";else{l=n[2];l=null==l||""==l?"n":Da[l];n=n[1];if(null==n||""==n)n="4";else var r=Ca[n],n=r?r:isNaN(n)?"4":n.substr(0,1);l=[l,n].join("")}}else l="";l&&g.push(l)}0<g.length&&(f=g);3==d.length&&(d=d[2],g=[],d=d?d.split(","):
 g,0<d.length&&(d=Ba[d[0]])&&(a.c[e]=d))}a.c[e]||(d=Ba[e])&&(a.c[e]=d);for(d=0;d<f.length;d+=1)a.a.push(new H(e,f[d]))}};function Ga(a,b){this.c=a;this.a=b}var Ha={Arimo:!0,Cousine:!0,Tinos:!0};Ga.prototype.load=function(a){var b=new C,c=this.c,d=new va(this.a.api,z(c),this.a.text),e=this.a.families;xa(d,e);var f=new Aa(e);Fa(f);A(c,za(d),D(b));F(b,function(){a(f.a,f.c,Ha)})};function Ia(a,b){this.c=a;this.a=b}Ia.prototype.load=function(a){var b=this.a.id,c=this.c.m;b?B(this.c,(this.a.api||"https://use.typekit.net")+"/"+b+".js",function(b){if(b)a([]);else if(c.Typekit&&c.Typekit.config&&c.Typekit.config.fn){b=c.Typekit.config.fn;for(var e=[],f=0;f<b.length;f+=2)for(var g=b[f],k=b[f+1],h=0;h<k.length;h++)e.push(new H(g,k[h]));try{c.Typekit.load({events:!1,classes:!1,async:!0})}catch(m){}a(e)}},2E3):a([])};function Ja(a,b){this.c=a;this.f=b;this.a=[]}Ja.prototype.load=function(a){var b=this.f.id,c=this.c.m,d=this;b?(c.__webfontfontdeckmodule__||(c.__webfontfontdeckmodule__={}),c.__webfontfontdeckmodule__[b]=function(b,c){for(var g=0,k=c.fonts.length;g<k;++g){var h=c.fonts[g];d.a.push(new H(h.name,ga("font-weight:"+h.weight+";font-style:"+h.style)))}a(d.a)},B(this.c,z(this.c)+(this.f.api||"//f.fontdeck.com/s/css/js/")+ea(this.c)+"/"+b+".js",function(b){b&&a([])})):a([])};var Y=new pa(window);Y.a.c.custom=function(a,b){return new ua(b,a)};Y.a.c.fontdeck=function(a,b){return new Ja(b,a)};Y.a.c.monotype=function(a,b){return new sa(b,a)};Y.a.c.typekit=function(a,b){return new Ia(b,a)};Y.a.c.google=function(a,b){return new Ga(b,a)};var Z={load:p(Y.load,Y)};"function"===typeof define&&define.amd?define(function(){return Z}):"undefined"!==typeof module&&module.exports?module.exports=Z:(window.WebFont=Z,window.WebFontConfig&&Y.load(window.WebFontConfig));}());
+
+var blaze = blaze || {};
+blaze.utils = blaze.utils || {};
+
+/**
+ * Sets all columns with 'data-blaze-eqht-col' attribute to have equal height, if their group number is the same.
+ * Usage:
+ * add data-blaze-eqht="group_number" to elements that must have equal height.
+ * group_number is an integer starting from 1 and up to the maximum group number on a page
+ */
+blaze.utils.equalHeightColumns = function () {
+    var currentGroup,
+        groupQty = 0,
+        i,
+        j,
+        currentHeight,
+        tallest,
+        group;
+
+    // Remove all values set previously
+    group = document.querySelectorAll('[data-blaze-eqht]');
+    for (i = 0; i < group.length; i++) {
+        // Find number of columns present
+        currentGroup = group[i].dataset.blazeEqht;
+        if (currentGroup > groupQty) {
+            groupQty = currentGroup;
+        }
+    }
+
+    for (i = 1; i <= groupQty; i++) {
+        currentHeight = 0;
+        tallest = 0;
+        group = document.querySelectorAll("[data-blaze-eqht='" + i + "']");
+        for (j = 0; j < group.length; j++) {
+            currentHeight = group[j].clientHeight;
+            if (currentHeight > tallest) tallest = currentHeight;
+        }
+        for (j = 0; j < group.length; j++) {
+            group[j].style.minHeight = tallest + 'px';
+        }
+    }
+};

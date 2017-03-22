@@ -1,9 +1,13 @@
+@import "../components/blaze-utils/scss/helpers.scss";
 @import "variables"; //Custom theme variables such as colors, dimensions, etc.
 @import "compatibility";
 
-@import "bootstrap_variables";
-@import "bootstrap";
-@import "bootstrap_menu";
+@import "variables-bootstrap";
+@import "bootstrap-components";
+@import "bootstrap-nav";
+
+// Toolset-specific
+@import "bootstrap-nav-toolset";
 
 @import "colorbox";
 @import "utility";

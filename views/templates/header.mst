@@ -15,7 +15,7 @@
             <!-- Collapsible navbar element, goes to menu on mobile -->
             <div class="collapse navbar-collapse" id="bs-navbar-collapse">
                 {{{mainMenuBootstrap3}}}
-                <form id="searchform" class="navbar-form navbar-right" role="search" method="get" action="{{siteURL}}">
+                <form id="searchform" class="navbar-right" role="search" method="get" action="{{siteURL}}">
                     <div class="form-group">
                         <label class="screen-reader-text" for="s">Search for:</label>
                         <input type="text" class="form-control" value="" name="s" id="s" placeholder="Search">

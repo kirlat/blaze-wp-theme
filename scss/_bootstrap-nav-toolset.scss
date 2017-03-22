@@ -1,0 +1,131 @@
+// This redefines styling for Bootstrap 3 menu as used by Toolset Layouts (http://wp-types.com)
+
+/* DDL Menu Cell*/
+.ddl-nav-wrap {
+    float: right;
+    margin-top: 40px;
+    margin-left: -1px;
+}
+
+.ddl-nav-wrap .ddl-nav,
+.ddl-nav-extra .ddl-nav-wrap {
+    margin: 0;
+}
+
+.ddl-nav-extra .ddl-nav-wrap {
+    float: left;
+    padding: 0 20px;
+}
+
+@media (max-width: $grid-float-breakpoint) {
+    .ddl-nav-wrap {
+        float: none !important;
+        width: 100%;
+        margin-top: 20px;
+    }
+}
+
+// Extend existing bootstrap classes
+.ddl-nav {
+    @extend .nav;
+}
+
+.ddl-nav-justified {
+    @extend .nav-justified;
+}
+
+.ddl-nav-divider {
+    @extend .nav-divider;
+}
+
+.ddl-nav-tabs {
+    @extend .nav-tabs;
+}
+
+.ddl-nav-pills {
+    @extend .nav-pills;
+}
+
+.ddl-nav-stacked {
+    @extend .nav-stacked;
+}
+
+.ddl-navbar {
+    @extend .navbar;
+}
+
+.ddl-navbar-fixed-top {
+    @extend .navbar-fixed-top;
+}
+
+.ddl-navbar-fixed-bottom {
+    @extend .navbar-fixed-bottom;
+}
+
+.ddl-navbar-static-top {
+    @extend .navbar-static-top;
+}
+
+.ddl-navbar-left {
+    @extend .navbar-left;
+}
+
+.ddl-navbar-right {
+    @extend .navbar-right;
+}
+
+.ddl-navbar-header {
+    @extend .navbar-header;
+}
+
+.ddl-navbar-collapse {
+    @extend .navbar-collapse;
+}
+
+.ddl-navbar-toggle {
+    @extend .navbar-toggle;
+}
+
+.ddl-navbar-nav {
+    @extend .navbar-nav;
+}
+
+.ddl-navbar-default {
+    @extend .navbar-default;
+}
+
+.ddl-dropdown {
+    @extend .dropdown-submenu;
+}
+
+.ddl-dropdown-toggle {
+    @extend .dropdown-toggle;
+}
+
+.ddl-dropdown-menu {
+    @extend .dropdown-menu;
+}
+
+.ddl-dropdown-submenu {
+    @extend .dropdown-submenu;
+}
+
+.ddl-dropdown-menu-left {
+    @extend .dropdown-menu-left;
+}
+
+.ddl-dropdown-menu-right {
+    @extend .dropdown-menu-right;
+}
+
+.ddl-dropdown-header {
+    @extend .dropdown-header;
+}
+
+.ddl-dropdown-backdrop {
+    @extend .dropdown-backdrop;
+}
+
+.ddl-icon-bar {
+    @extend .icon-bar;
+}
